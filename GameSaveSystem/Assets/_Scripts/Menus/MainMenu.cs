@@ -8,13 +8,13 @@ public class MainMenu : MonoBehaviour
    public void OnNewGameClicked()
     {
         SceneManager.LoadScene(1);
-        SaveManager.instance.NewGame();
+        //SaveManager.instance.NewGame();
     }
 
     public void OnLoadGameClicked()
     {
         SceneManager.LoadScene(1);
-        SaveManager.instance.LoadGame();
+        //SaveManager.instance.LoadGame();
     }
 }
   
