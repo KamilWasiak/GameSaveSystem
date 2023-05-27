@@ -6,8 +6,6 @@ public class PlayerStats : MonoBehaviour, ISaveable
 {
     [SerializeField]
     private int playerHealth;
-    //private int playerLevel;
-    //private Vector3 playerPosition;
 
     void Start()
     {

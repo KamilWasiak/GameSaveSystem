@@ -6,10 +6,12 @@ using UnityEngine;
 public class GameData 
 {
     public int playerHealth;
+    public Vector3 playerPosition;
 
     public GameData()
     {
         this.playerHealth = 100;
+        playerPosition = new Vector3(0, 1, 0);
     }
 
 }
