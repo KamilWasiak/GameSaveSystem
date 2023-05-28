@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using CloudSaveSample;
 
 public class SaveManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class SaveManager : MonoBehaviour
     private List<ISaveable> saveableObjects;
 
     private FileSaveHandler saveHandler;
+    private CloudSaveSample.CloudSaveSample cloudsaveHandler;
     
   public static SaveManager instance { get; private set; }
 
@@ -30,6 +32,7 @@ public class SaveManager : MonoBehaviour
         instance = this;
 
         this.saveHandler = new FileSaveHandler(Application.persistentDataPath, filename, useEncryption);
+        this.cloudsaveHandler = new CloudSaveSample.CloudSaveSample();
     }
 
     private void OnEnable()
@@ -74,7 +77,8 @@ public class SaveManager : MonoBehaviour
             saveableObj.SaveData(ref gameData);
         }
 
-        saveHandler.Save(gameData);
+        //saveHandler.Save(gameData);
+        cloudsaveHandler.Save(gameData);
     }
 
     public void LoadGame()
