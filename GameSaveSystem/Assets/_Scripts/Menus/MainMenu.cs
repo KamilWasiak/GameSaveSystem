@@ -7,14 +7,14 @@ public class MainMenu : MonoBehaviour
 {
    public void OnNewGameClicked()
     {
-        SceneManager.LoadScene(1);
-        //SaveManager.instance.NewGame();
+        
+        SaveManager.instance.NewGame();
+        SceneManager.LoadSceneAsync("Game");
     }
 
     public void OnLoadGameClicked()
     {
-        SceneManager.LoadScene(1);
-        //SaveManager.instance.LoadGame();
+        SceneManager.LoadSceneAsync("Game");
     }
 }
   

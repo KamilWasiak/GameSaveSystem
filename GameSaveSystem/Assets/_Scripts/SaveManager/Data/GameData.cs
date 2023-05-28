@@ -15,9 +15,5 @@ public class GameData
 
         playerPosition = new SerializableDictionary<string, Vector3>();
         playerPosition["PlayerPosition"] = new Vector3(0, 1, 0);
-        //playerPosition["PlayerPosition"] = new float[3];
-        //playerPosition["PlayerPosition"][0] = 0;
-        //playerPosition["PlayerPosition"][1] = 1;
-        //playerPosition["PlayerPosition"][2] = 0;
     }
 }

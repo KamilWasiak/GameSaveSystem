@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
@@ -18,20 +19,47 @@ public class SaveManager : MonoBehaviour
     
   public static SaveManager instance { get; private set; }
 
-    private void Start()
-    {
-        this.saveHandler = new FileSaveHandler(Application.persistentDataPath, filename, useEncryption);
-        this.saveableObjects = FindAllSaveableObjects();
-        LoadGame();
-    }
-
     private void Awake()
     {
         if (instance != null)
         {
             Debug.LogError("Save Manager alraedy exists in the scene");
+            Destroy(this.gameObject);
+            return;
         }
         instance = this;
+
+        this.saveHandler = new FileSaveHandler(Application.persistentDataPath, filename, useEncryption);
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }
+
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        this.saveableObjects = FindAllSaveableObjects();
+        // LoadGame();      -Currently not working as it causes errors
+    }
+
+    public void OnSceneUnloaded(Scene scene)
+    {
+        SaveGame();
+    }
+
+    private void Start()
+    {
+        
+        
+        LoadGame();
     }
 
     public void NewGame()

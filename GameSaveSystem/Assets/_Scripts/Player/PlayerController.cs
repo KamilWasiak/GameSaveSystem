@@ -45,8 +45,6 @@ public class PlayerController : MonoBehaviour, ISaveable
         Camera.main.transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
 
         playerPosition = transform.position;
-
-        Debug.Log(playerPosition);
     }
 
     public void LoadData(GameData data)

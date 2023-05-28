@@ -29,7 +29,6 @@ public class PlayerStats : MonoBehaviour, ISaveable
 
     public void SaveData(ref GameData data)
     {
-        // data.playerHealth = this.playerHealth;
         if (data.playerHealth.ContainsKey(playerHealthKey))
         {
             data.playerHealth.Remove(playerHealthKey);
