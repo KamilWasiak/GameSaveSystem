@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, ISaveable
@@ -8,12 +9,18 @@ public class PlayerController : MonoBehaviour, ISaveable
     private float verticalRotation = 0f;
     private CharacterController characterController;
 
+    [SerializeField]
+    private Vector3 playerPosition;
+    private string playerPositionKey;
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
         // Hide and lock the cursor to the center of the screen
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        playerPositionKey = ("PlayerPosition");
     }
 
     private void Update()
@@ -36,15 +43,24 @@ public class PlayerController : MonoBehaviour, ISaveable
         verticalRotation -= mouseY;
         verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
         Camera.main.transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+
+        playerPosition = transform.position;
+
+        Debug.Log(playerPosition);
     }
 
     public void LoadData(GameData data)
     {
-        this.transform.position = data.playerPosition;
+        data.playerPosition.TryGetValue(playerPositionKey, out playerPosition);
+        transform.position = playerPosition;
     }
 
     public void SaveData(ref GameData data)
     {
-        data.playerPosition = this.transform.position;
+        if (data.playerPosition.ContainsKey(playerPositionKey))
+        {
+            data.playerPosition.Remove(playerPositionKey);
+        }
+        data.playerPosition.Add(playerPositionKey, playerPosition);
     }
 }

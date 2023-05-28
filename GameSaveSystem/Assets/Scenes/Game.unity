@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filename: save
+  useEncryption: 0
 --- !u!4 &758326333
 Transform:
   m_ObjectHideFlags: 0

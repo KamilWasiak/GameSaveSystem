@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour, ISaveable
 {
-    private string playerHealthKey;
 
     [SerializeField]
     private int playerHealth;
+    private string playerHealthKey;
 
     void Start()
     {
@@ -24,8 +24,6 @@ public class PlayerStats : MonoBehaviour, ISaveable
 
     public void LoadData(GameData data)
     {
-       // this.playerHealth = data.playerHealth;
-
         data.playerHealth.TryGetValue(playerHealthKey, out playerHealth);
     }
 
