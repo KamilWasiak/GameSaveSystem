@@ -83,6 +83,12 @@ public class SaveManager : MonoBehaviour
 
     public void SaveGame()
     {
+        if (this.gameData == null)
+        {
+            Debug.Log("No data found. Start a new game before trying to save.");
+            return;
+        }
+
         foreach (ISaveable saveableObj in saveableObjects)
         {
             saveableObj.SaveData(ref gameData);
@@ -122,13 +128,19 @@ public class SaveManager : MonoBehaviour
 
         if (this.gameData == null)
         {
-            NewGame();
+            Debug.Log("No save file found. Start a new game before trying to load.");
+            return;
         }
 
         foreach (ISaveable saveableObj in saveableObjects)
         {
             saveableObj.LoadData(gameData);
         }
+    }
+
+    public bool hasSaveFile()
+    {
+        return gameData != null;
     }
 
     private void OnApplicationQuit()
@@ -143,4 +155,6 @@ public class SaveManager : MonoBehaviour
 
         return new List<ISaveable>(saveableObjects);
     }
+
+
 }
