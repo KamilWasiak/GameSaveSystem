@@ -6,7 +6,7 @@ public class PlayerStats : MonoBehaviour, ISaveable
 {
 
     [SerializeField]
-    private int playerHealth;
+    public int playerHealth;
     private string playerHealthKey;
 
     void Awake()
