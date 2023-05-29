@@ -548,8 +548,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -759, y: -162}
-  m_SizeDelta: {x: 200, y: 29.5}
+  m_AnchoredPosition: {x: -759, y: -145.24635}
+  m_SizeDelta: {x: 200, y: 46.2537}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &525133974
 MonoBehaviour:
@@ -574,6 +574,9 @@ MonoBehaviour:
   m_text: 'Press ''G'' to test Gold
 
     Press ''H'' to test Health
+
+    Press ''P''
+    or ''Escape'' to Pause
 
 
 '
