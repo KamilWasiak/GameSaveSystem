@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour, ISaveable
         playerPosition = transform.position;
         this.enabled = true;
     }
-
     public void LoadData(GameData data)
     {
         data.playerPosition.TryGetValue(playerPositionKey, out playerPosition);

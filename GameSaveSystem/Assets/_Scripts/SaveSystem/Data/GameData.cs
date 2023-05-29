@@ -22,6 +22,9 @@ public class GameData
 
         coinsCollected = new SerializableDictionary<string, bool>();
 
+        //Loading data not working as Vector3's are not serializable. 
+        //In order to make this work a converter class needs to be made to convert
+        //the vector3 into a float array
         playerPosition = new SerializableDictionary<string, Vector3>();
         playerPosition["PlayerPosition"] = new Vector3(0, 1, 0);
     }

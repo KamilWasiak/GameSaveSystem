@@ -701,7 +701,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1427941893371914505, guid: a77ac46b310f33e43b1a9a3ff60dd849, type: 3}
       propertyPath: saveMethod
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1427941893371914510, guid: a77ac46b310f33e43b1a9a3ff60dd849, type: 3}
       propertyPath: m_Name
