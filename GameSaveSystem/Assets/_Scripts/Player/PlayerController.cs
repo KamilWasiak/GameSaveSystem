@@ -13,14 +13,12 @@ public class PlayerController : MonoBehaviour, ISaveable
     private Vector3 playerPosition;
     private string playerPositionKey;
 
-    private void Start()
+    private void Awake()
     {
         characterController = GetComponent<CharacterController>();
-        // Hide and lock the cursor to the center of the screen
+        playerPositionKey = ("PlayerPosition");
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        playerPositionKey = ("PlayerPosition");
     }
 
     private void Update()

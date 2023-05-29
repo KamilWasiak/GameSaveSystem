@@ -11,13 +11,13 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private string filename;
 
     [SerializeField] private bool useEncryption;
-    //[SerializeField] private bool useCloudStorage;
 
     private GameData gameData;
 
     private List<ISaveable> saveableObjects;
 
     private FileSaveHandler saveHandler;
+    private BinarySaveHandler binarySaveHandler;
     private CloudSaveSample.CloudSaveSample cloudsaveHandler;
     enum SaveMethod
     {
@@ -33,20 +33,22 @@ public class SaveManager : MonoBehaviour
     }
     [SerializeField] SaveType saveType;
 
-
     public static SaveManager instance { get; private set; }
 
     private void Awake()
     {
+        DontDestroyOnLoad(this.gameObject);
+
         if (instance != null)
         {
-            Debug.LogError("Save Manager alraedy exists in the scene");
+            Debug.LogWarning("Save Manager alraedy exists in the scene, deleting new instance.");
             Destroy(this.gameObject);
             return;
         }
         instance = this;
 
         this.saveHandler = new FileSaveHandler(Application.persistentDataPath, filename, useEncryption);
+        this.binarySaveHandler = new BinarySaveHandler(Application.persistentDataPath, filename);
         this.cloudsaveHandler = new CloudSaveSample.CloudSaveSample();
     }
 
@@ -65,19 +67,13 @@ public class SaveManager : MonoBehaviour
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         this.saveableObjects = FindAllSaveableObjects();
-        // LoadGame();      -Currently not working as it causes errors
+        LoadGame();
     }
 
     public void OnSceneUnloaded(Scene scene)
     {
-        SaveGame();
-    }
 
-    private void Start()
-    {
-        
-        
-        LoadGame();
+        SaveGame();
     }
 
     public void NewGame()
@@ -92,9 +88,13 @@ public class SaveManager : MonoBehaviour
             saveableObj.SaveData(ref gameData);
         }
 
-        if (saveMethod == SaveMethod.LocalSave)
+        if (saveMethod == SaveMethod.LocalSave && saveType == SaveType.Json)
         {
             saveHandler.Save(gameData);
+        }
+        else if (saveMethod == SaveMethod.LocalSave && saveType == SaveType.Binary)
+        {
+            binarySaveHandler.Save(gameData);
         }
         else if (saveMethod == SaveMethod.CloudSave)
         {
@@ -104,13 +104,20 @@ public class SaveManager : MonoBehaviour
 
     public void LoadGame()
     {
-        if (saveMethod == SaveMethod.LocalSave)
+        if (saveMethod == SaveMethod.LocalSave && saveType == SaveType.Json)
         {
             this.gameData = saveHandler.Load();
+            
+        }
+        else if (saveMethod == SaveMethod.LocalSave && saveType == SaveType.Binary)
+        {
+            //this.gameData = binarySaveHandler.Load();
+            //Loading binary files currently not working - fix required
         }
         else if (saveMethod == SaveMethod.CloudSave)
         {
             //this.gameData = cloudsaveHandler.Load();
+            //cloud save loading currently not working - fix required
         }
 
         if (this.gameData == null)

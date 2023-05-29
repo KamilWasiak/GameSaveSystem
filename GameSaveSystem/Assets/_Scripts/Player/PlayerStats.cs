@@ -9,7 +9,7 @@ public class PlayerStats : MonoBehaviour, ISaveable
     private int playerHealth;
     private string playerHealthKey;
 
-    void Start()
+    void Awake()
     {
         playerHealthKey = ("PlayerHealth");
     }

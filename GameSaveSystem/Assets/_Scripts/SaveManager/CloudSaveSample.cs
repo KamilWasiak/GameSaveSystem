@@ -225,10 +225,10 @@ namespace CloudSaveSample
             await CloudSaveService.Instance.Data.ForceSaveAsync(playerHealthTarget);   
         }
 
-        public async void Load(GameData data)
-        {
-            // Load data here
-            // Dictionary<string, int> loadedData = await CloudSaveService.Instance.Data.LoadAsync();
-        }
+        //public async void Load(GameData data)
+        //{
+        //     Load data here
+        //     Dictionary<string, int> loadedData = await CloudSaveService.Instance.Data.LoadAsync();
+        //}
     }
 }
