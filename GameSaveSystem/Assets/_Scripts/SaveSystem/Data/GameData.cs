@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
+    public long lastUpdated;
+
     public SerializableDictionary<string, int> playerHealth;
     public SerializableDictionary<string, Vector3> playerPosition;
 

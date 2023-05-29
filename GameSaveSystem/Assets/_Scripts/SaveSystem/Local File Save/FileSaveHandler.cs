@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Net.NetworkInformation;
+using Unity.VisualScripting;
 
 public class FileSaveHandler
 {
@@ -20,9 +21,14 @@ public class FileSaveHandler
         this.useEncryption = useEncryption;
     }
 
-    public GameData Load()
+    public GameData Load(string profileId)
     {
-        string fullPath = Path.Combine(saveDirPath, saveFileName);
+        if (profileId == null)
+        {
+            return null;
+        }
+
+        string fullPath = Path.Combine(saveDirPath, profileId, saveFileName);
         GameData loadedData = null;
         if (File.Exists(fullPath))
         {
@@ -52,9 +58,14 @@ public class FileSaveHandler
         return loadedData;
     }
 
-    public void Save(GameData data)
+    public void Save(GameData data, string profileId)
     {
-        string fullPath = Path.Combine(saveDirPath, saveFileName);
+        if (profileId == null)
+        {
+            return;
+        }
+
+        string fullPath = Path.Combine(saveDirPath, profileId, saveFileName);
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
@@ -78,6 +89,69 @@ public class FileSaveHandler
         {
             Debug.LogError("Error when trying to save " + e);
         }
+    }
+
+    public Dictionary<string, GameData> LoadAllProfiles()
+    {
+        Dictionary<string, GameData> profileDictionary = new Dictionary<string, GameData>();
+
+        IEnumerable<DirectoryInfo> dirInfos = new DirectoryInfo(saveDirPath).EnumerateDirectories();
+        foreach (DirectoryInfo dirInfo in dirInfos)
+        {
+            string profileId = dirInfo.Name;
+
+            string fullPath = Path.Combine(saveDirPath, profileId,saveFileName);
+            if (!File.Exists(fullPath))
+            {
+                continue;
+            }
+
+            GameData profileData = Load(profileId);
+
+            if (profileData != null)
+            {
+                profileDictionary.Add(profileId, profileData);
+            }
+            else
+            {
+                Debug.LogError("Something went wrong when loading profile");
+            }
+        }
+
+        return profileDictionary;
+    }
+
+    public string GetMostRecentlyUpdatedProfileId()
+    {
+        string mostRecentProfileId = null;
+
+        Dictionary<string, GameData> profilesGameData = LoadAllProfiles();
+        foreach (KeyValuePair<string, GameData> pair in profilesGameData)
+        {
+            string profileId = pair.Key;
+            GameData gamedata = pair.Value;
+
+            if (gamedata == null)
+            {
+                continue;
+            }
+
+            if (mostRecentProfileId == null)
+            {
+                mostRecentProfileId = profileId;
+            }
+            else
+            {
+                DateTime mostRecentDateTime = DateTime.FromBinary(profilesGameData[mostRecentProfileId].lastUpdated);
+                DateTime newDateTime = DateTime.FromBinary(gamedata.lastUpdated);
+
+                if (newDateTime > mostRecentDateTime)
+                {
+                    mostRecentProfileId = profileId;
+                }
+            }
+        }
+        return mostRecentProfileId;
     }
 
     private string EncryptDecrypt(string data)

@@ -15,6 +15,8 @@ public class SaveManager : MonoBehaviour
     
     private GameData gameData;
 
+    private string selectedProfileId = "";
+
     private List<ISaveable> saveableObjects;
 
     private FileSaveHandler saveHandler;
@@ -52,6 +54,8 @@ public class SaveManager : MonoBehaviour
         this.saveHandler = new FileSaveHandler(Application.persistentDataPath, filename, useEncryption);
         this.binarySaveHandler = new BinarySaveHandler(Application.persistentDataPath, filename);
         this.cloudsaveHandler = new CloudSaveSample.CloudSaveSample();
+
+        this.selectedProfileId = saveHandler.GetMostRecentlyUpdatedProfileId();
     }
 
     private void OnEnable()
@@ -78,6 +82,12 @@ public class SaveManager : MonoBehaviour
         SaveGame();
     }
 
+    public void ChangeSelectedProfileId(string newProfileId)
+    {
+        this.selectedProfileId = newProfileId;
+        LoadGame();
+    }
+
     public void NewGame()
     {
         this.gameData = new GameData();
@@ -96,9 +106,11 @@ public class SaveManager : MonoBehaviour
             saveableObj.SaveData(ref gameData);
         }
 
+        gameData.lastUpdated = System.DateTime.Now.ToBinary();
+
         if (saveMethod == SaveMethod.LocalSave && saveType == SaveType.Json)
         {
-            saveHandler.Save(gameData);
+            saveHandler.Save(gameData, selectedProfileId);
         }
         else if (saveMethod == SaveMethod.LocalSave && saveType == SaveType.Binary)
         {
@@ -114,7 +126,7 @@ public class SaveManager : MonoBehaviour
     {
         if (saveMethod == SaveMethod.LocalSave && saveType == SaveType.Json)
         {
-            this.gameData = saveHandler.Load();
+            this.gameData = saveHandler.Load(selectedProfileId);
             
         }
         else if (saveMethod == SaveMethod.LocalSave && saveType == SaveType.Binary)
@@ -138,6 +150,11 @@ public class SaveManager : MonoBehaviour
         {
             saveableObj.LoadData(gameData);
         }
+    }
+
+    public Dictionary<string, GameData> GetAllProfilesGameData()
+    {
+        return saveHandler.LoadAllProfiles();
     }
 
     public bool hasSaveFile()
