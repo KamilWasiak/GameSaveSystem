@@ -38,7 +38,6 @@ public class PauseMenu : MonoBehaviour
         isPauseMenuActive = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Cursor.visible = true;
     }
 
     void ResumeGame()
@@ -59,6 +58,7 @@ public class PauseMenu : MonoBehaviour
     public void GoToMainMenu()
     {
         //SaveManager.instance.SaveGame();
+        Time.timeScale = 1.0f;
         playerController.enabled = true;
         SceneManager.LoadSceneAsync("Main Menu");
     }
