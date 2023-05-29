@@ -12,6 +12,7 @@ public class SaveManager : MonoBehaviour
 
     [SerializeField] private bool useEncryption;
 
+    
     private GameData gameData;
 
     private List<ISaveable> saveableObjects;
@@ -31,7 +32,8 @@ public class SaveManager : MonoBehaviour
         Json,
         Binary
     }
-    [SerializeField] SaveType saveType;
+    [Header("(Local Save Only)")]
+        [SerializeField] SaveType saveType;
 
     public static SaveManager instance { get; private set; }
 
