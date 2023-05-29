@@ -9,9 +9,16 @@ public class PlayerStats : MonoBehaviour, ISaveable
     public int playerHealth;
     private string playerHealthKey;
 
+    [SerializeField]
+    public int playerGold;
+    private string playerGoldKey;
+
+
+
     void Awake()
     {
         playerHealthKey = ("PlayerHealth");
+        playerGoldKey = ("PlayerGold");
     }
 
     void Update()
@@ -20,11 +27,17 @@ public class PlayerStats : MonoBehaviour, ISaveable
         {
             playerHealth -= 10;
         }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            playerGold++;
+        }
     }
 
     public void LoadData(GameData data)
     {
         data.playerHealth.TryGetValue(playerHealthKey, out playerHealth);
+        data.playerGold.TryGetValue(playerGoldKey, out playerGold);
     }
 
     public void SaveData(ref GameData data)
@@ -34,5 +47,12 @@ public class PlayerStats : MonoBehaviour, ISaveable
             data.playerHealth.Remove(playerHealthKey);
         }
         data.playerHealth.Add(playerHealthKey, playerHealth);
+
+
+        if (data.playerGold.ContainsKey(playerGoldKey))
+        {
+            data.playerGold.Remove(playerGoldKey);
+        }
+        data.playerGold.Add(playerGoldKey, playerGold);
     }
 }

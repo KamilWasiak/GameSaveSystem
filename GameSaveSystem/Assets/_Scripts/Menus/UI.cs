@@ -6,7 +6,7 @@ using UnityEngine;
 public class UI : MonoBehaviour
 {
     TextMeshProUGUI healthText;
-    TextMeshProUGUI coinsText;
+    TextMeshProUGUI goldText;
     PlayerStats playerStats;
 
     private void Start()
@@ -20,9 +20,9 @@ public class UI : MonoBehaviour
         {
             UpdateHealthUI();
         }
-        else if (gameObject.name == "CoinsText")
+        else if (gameObject.name == "GoldText")
         {
-            UpdateCoinUI();
+            UpdateGoldUI();
         }   
     }
 
@@ -32,9 +32,9 @@ public class UI : MonoBehaviour
         healthText.text = ("Health: " + playerStats.playerHealth);
     }
 
-    private void UpdateCoinUI()
+    private void UpdateGoldUI()
     {
-        coinsText = gameObject.GetComponent<TextMeshProUGUI>();
-        coinsText.text = ("Coins: " + playerStats.playerHealth);
+        goldText = gameObject.GetComponent<TextMeshProUGUI>();
+        goldText.text = ("Gold: " + playerStats.playerGold);
     }
 }
