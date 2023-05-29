@@ -11,6 +11,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private string filename;
 
     [SerializeField] private bool useEncryption;
+    //[SerializeField] private bool useCloudStorage;
 
     private GameData gameData;
 
@@ -18,8 +19,22 @@ public class SaveManager : MonoBehaviour
 
     private FileSaveHandler saveHandler;
     private CloudSaveSample.CloudSaveSample cloudsaveHandler;
-    
-  public static SaveManager instance { get; private set; }
+    enum SaveMethod
+    {
+        LocalSave,
+        CloudSave
+    }
+    [SerializeField] SaveMethod saveMethod;
+
+    enum SaveType
+    {
+        Json,
+        Binary
+    }
+    [SerializeField] SaveType saveType;
+
+
+    public static SaveManager instance { get; private set; }
 
     private void Awake()
     {
@@ -77,13 +92,26 @@ public class SaveManager : MonoBehaviour
             saveableObj.SaveData(ref gameData);
         }
 
-        //saveHandler.Save(gameData);
-        cloudsaveHandler.Save(gameData);
+        if (saveMethod == SaveMethod.LocalSave)
+        {
+            saveHandler.Save(gameData);
+        }
+        else if (saveMethod == SaveMethod.CloudSave)
+        {
+            cloudsaveHandler.Save(gameData);
+        }
     }
 
     public void LoadGame()
     {
-        this.gameData = saveHandler.Load();
+        if (saveMethod == SaveMethod.LocalSave)
+        {
+            this.gameData = saveHandler.Load();
+        }
+        else if (saveMethod == SaveMethod.CloudSave)
+        {
+            //this.gameData = cloudsaveHandler.Load();
+        }
 
         if (this.gameData == null)
         {

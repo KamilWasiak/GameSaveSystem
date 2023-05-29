@@ -221,15 +221,14 @@ namespace CloudSaveSample
 
         public async void Save(GameData data)
         {
-            SerializableDictionary<string, int> playerHealthSource = data.playerHealth;
-            Dictionary<string, object> playerHealthTarget = playerHealthSource.ToDictionary(kvp => kvp.Key, kvp => (object)kvp.Value);
-            await CloudSaveService.Instance.Data.ForceSaveAsync(playerHealthTarget);
+            Dictionary<string, object> playerHealthTarget = data.playerHealth.ToDictionary(kvp => kvp.Key, kvp => (object)kvp.Value);
+            await CloudSaveService.Instance.Data.ForceSaveAsync(playerHealthTarget);   
+        }
 
-            SerializableDictionary<string, Vector3> playerPositionSource = data.playerPosition;
-            Dictionary<string, object> playerPositionTarget = playerPositionSource.ToDictionary(kvp => kvp.Key, kvp => (object)kvp.Value);
-            //await CloudSaveService.Instance.Data.ForceSaveAsync(playerPositionTarget);
-
-
+        public async void Load(GameData data)
+        {
+            // Load data here
+            // Dictionary<string, int> loadedData = await CloudSaveService.Instance.Data.LoadAsync();
         }
     }
 }
